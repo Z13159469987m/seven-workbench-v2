@@ -1,0 +1,26 @@
+{
+  "name": "七秒の魔法工作台",
+  "short_name": "魔法工作台",
+  "description": "七秒的灵感与工作管理台：魔法日报 / 我的项目 / 选题雷达 / 收藏小屋",
+  "lang": "zh-CN",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff0f7",
+  "theme_color": "#ff8fc4",
+  "icons": [
+    {
+      "src": "assets/icon-192.png?v=3",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png?v=3",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

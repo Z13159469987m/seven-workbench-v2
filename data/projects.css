@@ -1,0 +1,61 @@
+/* All rules are scoped to the project area and its own dialogs. */
+.content:has(> #view > .p1-projects){overflow-x:clip}
+.p1-projects{width:100%;min-width:0;font-size:14px}
+.p1-projects *,.p1-dialog *{box-sizing:border-box}
+.p1-toolbar,.p1-tabs,.p1-card-head,.p1-card-actions,.p1-todo-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.p1-toolbar{justify-content:space-between;gap:12px}
+.p1-button{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;min-height:44px;min-width:44px;padding:8px 12px;cursor:pointer;line-height:1.5;touch-action:manipulation}
+.p1-button:hover{background:var(--pink-pale);border-color:var(--pink)}
+.p1-button:disabled{opacity:.45;cursor:default}
+.p1-projects button:focus-visible,.p1-projects input:focus-visible,.p1-dialog :focus-visible{outline:3px solid var(--pink-deep);outline-offset:2px}
+.p1-tabs [aria-pressed="true"],.p1-primary{background:var(--pink-soft);border-color:var(--pink);font-weight:700}
+.p1-danger{color:#ad2859}
+.p1-status{min-height:24px;margin:10px 0;color:var(--ink2);overflow-wrap:anywhere}
+.p1-error{color:#aa2440}
+.p1-cards{display:grid;gap:18px;min-width:0}
+.p1-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-s);min-width:0;overflow-wrap:anywhere}
+.p1-card-head{justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.p1-card-head h3{font-size:18px;line-height:1.5;flex:1 1 160px;min-width:0;white-space:pre-wrap}
+.p1-details{display:grid;gap:12px;margin-bottom:18px}
+.p1-details>div{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px}
+.p1-details dt{color:var(--ink2);font-weight:600}
+.p1-details dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.p1-muted{color:var(--ink2);font-size:13px}
+.p1-todos{padding-top:14px;border-top:1px dashed var(--line)}
+.p1-todos h4{font-size:14px;margin-bottom:8px}
+.p1-todos ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.p1-todo{background:var(--cream);border:1px solid var(--line);padding:8px;border-radius:12px;min-width:0}
+.p1-check{display:flex;align-items:flex-start;gap:10px;min-height:44px;padding:10px 4px;cursor:pointer;min-width:0}
+.p1-check input{width:22px;height:22px;flex:0 0 22px;margin:0;accent-color:var(--pink-deep)}
+.p1-check span{white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.p1-done{text-decoration:line-through;color:var(--ink2)}
+.p1-todo-actions{justify-content:flex-end}
+.p1-add-todo{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:12px}
+.p1-add-todo label{flex:1 1 180px;min-width:0;font-size:13px;color:var(--ink2)}
+.p1-add-todo input,.p1-field input,.p1-field textarea{display:block;width:100%;min-width:0;min-height:44px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);padding:10px;font:inherit;font-size:16px;line-height:1.5;scroll-margin:16px 0}
+.p1-add-todo input{margin-top:4px}
+.p1-card-actions{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line)}
+.p1-empty{text-align:center;padding:36px 16px;background:rgba(255,255,255,.8);border:1px dashed var(--pink);border-radius:var(--radius)}
+.p1-empty p{margin-bottom:16px}
+.p1-dialog{position:fixed;inset:0;margin:auto;width:min(560px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line);border-radius:20px;background:#fff;color:var(--ink);font-family:var(--font);box-shadow:var(--shadow);overflow:hidden}
+.p1-dialog::backdrop{background:rgba(91,58,79,.4)}
+.p1-dialog[open]{display:flex;flex-direction:column}
+.p1-dialog form{display:flex;flex-direction:column;min-height:0;max-height:inherit;width:100%;overflow:hidden}
+.p1-dialog header{padding:16px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+.p1-dialog h3{font-size:17px;line-height:1.5}
+.p1-form-body{padding:16px 20px;min-height:0;overflow-y:auto;overscroll-behavior:contain;overflow-wrap:anywhere}
+.p1-field{display:block;margin-bottom:14px;font-size:14px;font-weight:600}
+.p1-field input,.p1-field textarea{margin-top:6px;font-weight:400}
+.p1-field textarea{resize:vertical;min-height:76px}
+.p1-dialog-message{font-size:13px;line-height:1.6;margin:4px 0;white-space:pre-wrap}
+.p1-dialog footer{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding:12px 20px;border-top:1px solid var(--line);flex-shrink:0;background:#fff;padding-bottom:max(12px,env(safe-area-inset-bottom))}
+@media(max-width:430px){
+  .p1-card{padding:14px}
+  .p1-card-head h3{flex-basis:140px}
+  .p1-details>div{grid-template-columns:1fr;gap:3px}
+  .p1-toolbar{align-items:stretch}
+  .p1-tabs{gap:6px}
+  .p1-todo-actions{gap:6px;justify-content:flex-start}
+  .p1-dialog header,.p1-form-body{padding:14px}
+  .p1-dialog footer{padding-left:14px;padding-right:14px}
+}
