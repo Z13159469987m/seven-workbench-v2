@@ -35,13 +35,16 @@
   }
   function generated(draft){
     if(!draft||typeof draft.eventId!=='string'||!draft.eventId.trim()||typeof draft.title!=='string'||!draft.title.trim())throw new Error('生成选题缺少事件标识或标题');
-    if(typeof draft.directionId!=='string'||!draft.directionId.trim())throw new Error('生成选题缺少方向ID');
+    const publicOnly=draft.publicOnly===true;
+    if(publicOnly){if(draft.directionId!==undefined&&draft.directionId!==null)throw new Error('公开事件不能携带私人方向ID');}
+    else if(typeof draft.directionId!=='string'||!draft.directionId.trim())throw new Error('生成选题缺少方向ID');
     return {radarSchemaVersion:1,kind:'candidate',title:draft.title.trim(),dedupeKey:'event:'+draft.eventId.trim(),
       eventId:draft.eventId.trim(),eventBrief:text(draft.eventBrief),riskNote:text(draft.riskNote),
-      directionId:draft.directionId,originalCategory:'',reason:text(draft.reason),angle:text(draft.angle),example:text(draft.example),
+      directionId:publicOnly?null:draft.directionId,originalCategory:'',reason:text(draft.reason),angle:text(draft.angle),example:text(draft.example),
       sources:sources(draft.sources),sourceText:'',origin:'generated',status:'candidate',abandonReason:'',adoptNote:'',sourceDate:text(draft.sourceDate),
       sourceRunId:text(draft.sourceRunId),directionRevision:Number.isSafeInteger(draft.directionRevision)?draft.directionRevision:null,
-      generatedAt:text(draft.generatedAt),sourceIds:Array.isArray(draft.sourceIds)?draft.sourceIds.filter(x=>typeof x==='string'):[]};
+      generatedAt:text(draft.generatedAt),sourceIds:Array.isArray(draft.sourceIds)?draft.sourceIds.filter(x=>typeof x==='string'):[],
+      ...(publicOnly?{publicOnly:true,publishedAt:text(draft.publishedAt)}:{})};
   }
   function hotTopics(rows){
     if(!Array.isArray(rows))return {items:[],skipped:1};
