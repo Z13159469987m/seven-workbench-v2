@@ -57,6 +57,11 @@
       ?`<div class="r2-reclassify" role="group" aria-label="修改状态"><span class="r2-reclassify-label">修改状态</span><div class="r2-state-buttons">${classificationButtons}</div></div>`
       :`<div class="r2-state-buttons" role="group" aria-label="事件归类">${classificationButtons}</div>`;
     const actions=record?`${classification}${note}${button('candidate-edit','备注 / 所属方向')}`:data.eventId?classification:button('save',saved?(saved.deletedAt?'已保存过（已删除）':'已保存为候选'):'保存为候选',saved?'disabled':'');
+    if(data.eventId&&data.publicOnly)return `<article class="r2-topic r2-generated" ${identity}>
+      <header class="r2-topic-head"><h3>${esc(data.title)}</h3>${stateBadge}${madeAction}</header>
+      <section class="r2-brief"><h4>公开来源怎么说</h4><p class="r2-text">${esc(data.eventBrief)}</p></section>
+      <section class="r2-source-section"><h4>来源</h4>${sourcesHtml(data.sources)}</section>
+      <footer>${actions}</footer></article>`;
     if(data.eventId)return `<article class="r2-topic r2-generated" ${identity}>
       <header class="r2-topic-head"><h3>${esc(data.title)}</h3><span class="r2-tag">${esc(directionLabel(data.directionId))}</span>${stateBadge}${madeAction}</header>
       <section class="r2-brief"><h4>这件事具体怎么回事</h4><p class="r2-text">${esc(data.eventBrief||'现有资料不足')}</p></section>
@@ -81,6 +86,12 @@
       <dl><dt>我要找什么</dt><dd>${esc(d.find||'暂未填写')}</dd><dt>排除什么</dt><dd>${esc(d.exclude||'暂未填写')}</dd><dt>适用账号 / 当前内容阶段</dt><dd>${esc(d.accountStage||'暂未填写')}</dd></dl>
       <footer>${button('direction-edit','编辑')}${button('direction-toggle',d.enabled?'暂停':'启用')}${button('direction-up','上移',index===0?'disabled':'')}${button('direction-down','下移',index===total-1?'disabled':'')}${button('direction-delete','删除')}</footer></article>`;
   }
+  function publicUpdatedAt(){
+    const dates=generatedFeed.filter(d=>d.publicOnly).map(d=>Date.parse(d.publishedAt)).filter(Number.isFinite);
+    if(!dates.length)return '';
+    const latest=new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',dateStyle:'medium',timeStyle:'short'}).format(new Date(Math.max(...dates)));
+    return ` 最近公开更新：${esc(latest)}。`;
+  }
   function render(){
     if(!host)return;
     try{current=service.snapshot();}catch(e){host.innerHTML=`<section class="r2-radar"><p role="alert" class="r2-error">${esc(e.message)}。没有改写选题数据。</p></section>`;return;}
@@ -97,7 +108,7 @@
     }
     else body=needsCloudBaseline()
       ?`<section class="r2-empty" role="status"><h3>尚未确认云端业务状态</h3><p>此网址的浏览器数据独立保存。先到云端同步读取、预览并确认业务数据；在此之前暂不显示“未归类”，避免把已归类或 PASS 的旧发现误认成新卡。</p>${button('open-sync','前往云端同步')}</section>`
-      :`<section><h3 class="r2-section-title">未归类 · 本轮 AI 新闻发现</h3><p class="r2-feed-note">${generatedFeed.length} 条事件发现。自动加工卡基于搜索来源线索，事实细节请结合来源复核。只有点击选题、待选或 PASS，才写入本地雷达。</p><div class="r2-topic-list">${unclassified.length?unclassified.map(({data,index})=>topicCard(data,index)).join(''):'<p class="r2-empty">本轮发现已全部归类。可从上方查看选题、待选和 PASS。</p>'}</div></section>`;
+      :`<section><h3 class="r2-section-title">未归类 · 本轮 AI 新闻发现</h3><p class="r2-feed-note">${generatedFeed.length} 条事件发现。自动加工卡基于搜索来源线索，事实细节请结合来源复核。只有点击选题、待选或 PASS，才写入本地雷达。${publicUpdatedAt()}</p><div class="r2-topic-list">${unclassified.length?unclassified.map(({data,index})=>topicCard(data,index)).join(''):'<p class="r2-empty">本轮发现已全部归类。可从上方查看选题、待选和 PASS。</p>'}</div></section>`;
     host.innerHTML=`<section class="r2-radar" aria-label="选题雷达">
       <section class="r2-directions-top"><header><h3>我的选题方向</h3><div class="r2-actions">${button('direction-new','＋ 新增方向')}${button('manage','管理方向')}</div></header>
         <div class="r2-chips">${enabled.length?enabled.map(d=>`<span class="r2-chip">${esc(d.data.title)}</span>`).join(''):'<p class="r2-muted">还没有启用方向，可以先配置，也可以浏览现有选题。</p>'}</div></section>
